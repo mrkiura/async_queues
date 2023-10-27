@@ -10,6 +10,17 @@ PROCESSES = multiprocessing.cpu_count() - 1
 NUMBER_OF_TASKS = 10
 
 
+def create_logger():
+    logger = multiprocessing.get_logger()
+    logger.setLevel(logging.INFO)
+    fh = logging.FileHandler("process.log")
+    fmt = "%(asctime)s - %(levelname)s %(message)s"
+    formatter = logging.Formatter(fmt)
+    fh.setFormatter(formatter)
+    logger.addHandler(fh)
+    return logger
+
+
 def process_tasks(task_queue):
     logger = multiprocessing.get_logger()
     proc = os.getpid()
