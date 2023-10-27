@@ -22,7 +22,7 @@ def create_logger():
 
 
 def process_tasks(task_queue):
-    logger = multiprocessing.get_logger()
+    logger = create_logger()
     proc = os.getpid()
     while not task_queue.empty():
         try:
@@ -38,7 +38,7 @@ def add_tasks(task_queue, number_of_tasks):
     for num in range(number_of_tasks):
         task_queue.put("pride-and-prejudice.txt")
         task_queue.put("heart-of-darkness.txt")
-        task_queue.put("frankensteins.txt")  # bound to cause an exception
+        task_queue.put("frankensteins.txt")
         task_queue.put("dracula.txt")
     return task_queue
 
@@ -49,7 +49,7 @@ def run():
     processes = []
     print(f"Runnng with {PROCESSES} processes!")
     start = time.time()
-    for n in range(PROCESSES):
+    for _ in range(PROCESSES):
         p = multiprocessing.Process(target=process_tasks, args=(full_task_queue,))
         processes.append(p)
         p.start()
