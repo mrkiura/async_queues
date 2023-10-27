@@ -21,3 +21,13 @@ class RQueue:
 
     def get_length(self):
         return self.conn.llen(self.name)
+
+
+class RTask:
+    def __init__(self, func, *args) -> None:
+        self.id = str(uuid.uuid4())
+        self.func = func
+        self.args = args
+
+    def process_task(self):
+        self.func(*self.args)
