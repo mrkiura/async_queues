@@ -19,7 +19,7 @@ class RQueue:
         task.process_task()
         return task
 
-    def get_length(self):
+    def __len__(self):
         return self.conn.llen(self.name)
 
 
