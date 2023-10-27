@@ -10,11 +10,11 @@ PROCESSES = multiprocessing.cpu_count() - 1
 NUMBER_OF_TASKS = 10
 
 
-def create_logger():
+def create_logger(pid):
     logger = multiprocessing.get_logger()
     logger.setLevel(logging.INFO)
-    fh = logging.FileHandler("process.log")
-    fmt = "%(asctime)s - %(levelname)s %(message)s"
+    fh = logging.FileHandler(f"logs/process_{pid}.log")
+    fmt = "%(asctime)s - %(levelname)s - %(message)s"
     formatter = logging.Formatter(fmt)
     fh.setFormatter(formatter)
     logger.addHandler(fh)
@@ -22,8 +22,8 @@ def create_logger():
 
 
 def process_tasks(task_queue):
-    logger = create_logger()
     proc = os.getpid()
+    logger = create_logger(proc)
     while not task_queue.empty():
         try:
             book = task_queue.get()
@@ -35,7 +35,7 @@ def process_tasks(task_queue):
 
 
 def add_tasks(task_queue, number_of_tasks):
-    for num in range(number_of_tasks):
+    for _ in range(number_of_tasks):
         task_queue.put("pride-and-prejudice.txt")
         task_queue.put("heart-of-darkness.txt")
         task_queue.put("frankensteins.txt")
